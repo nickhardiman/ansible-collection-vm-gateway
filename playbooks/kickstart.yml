@@ -1,0 +1,17 @@
+- name: Kickstart a new VM
+  hosts: hypervisor
+  become: true
+  gather_facts: false
+  # roles:
+  #   - name: Kickstart a new VM
+  #     role: nickhardiman.vm_gateway.kickstart
+  tasks:
+    - name: Kickstart a new VM
+      ansible.builtin.include_role:
+        name: nickhardiman.vm_gateway.kickstart
+        public: true
+
+    # TEST
+    - name: TEST
+      ansible.builtin.debug:
+        var: nics

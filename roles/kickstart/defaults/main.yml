@@ -1,0 +1,5 @@
+---
+# definitions for libvirt network, VM and OS
+# are located under the include_role call for 
+# nickhardiman.libvirt.libvirt_machine_kickstart 
+# and in the defaults file of that role.
