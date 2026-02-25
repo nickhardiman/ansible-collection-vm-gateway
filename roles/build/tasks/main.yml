@@ -22,6 +22,7 @@
       - https
       - ssh
     # OS
+    host: gateway
     fqdn: gateway.silvan.uk
     RPMs:
       - cockpit
@@ -38,6 +39,21 @@
 
 # !!! If there already is an image file, don't trash it. 
 
-- name: "Kickstart VM on hypervisor {{ inventory_hostname }}"
+# - name: "Kickstart VM on hypervisor {{ inventory_hostname }}"
+#   ansible.builtin.include_role:
+#     name: nickhardiman.libvirt.libvirt_machine_kickstart
+
+# gateway routing isn't sorted yet so it can't respond to a ping.
+- name: Run machine (it stops after install)
   ansible.builtin.include_role:
-    name: nickhardiman.libvirt.libvirt_machine_kickstart
+    name: nickhardiman.libvirt.libvirt_machine_start
+  vars:
+    wait_for_ping: false
+
+- name: "Add public IP to /etc/hosts on control node"
+  ansible.builtin.include_role:
+    name: nickhardiman.vm_gateway.etc_hosts_update
+
+- name: "Add roles to {{ fqdn }}"
+  ansible.builtin.include_role:
+    name: nickhardiman.vm_gateway.roles_add

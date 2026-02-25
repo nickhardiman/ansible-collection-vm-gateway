@@ -1,0 +1,8 @@
+- name: Buid the gateway VM
+  hosts: hypervisor
+  become: true
+  gather_facts: false
+  roles:
+    - name: Kickstart the new VM and configure it
+      role: nickhardiman.vm_gateway.build
+

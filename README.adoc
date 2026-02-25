@@ -1,3 +1,21 @@
 # Ansible Collection - nickhardiman.vm_gateway
 
 Documentation for the collection.
+
+Make one call, build a gateway.
+
+Only works on rhel-lab
+
+RHEL lab 
+
+WIP
+
+network of virtual machines on one fresh RHEL 10 host.
+
+take the AAP2 work and break up into less choking chunks
+
+* https://github.com/nickhardiman/script-rhel-setup
+* https://github.com/nickhardiman/ansible-playbook-rhel-lab
+* https://github.com/nickhardiman/ansible-collection-platform
+* https://github.com/nickhardiman/ansible-collection-vm-gateway
+* https://github.com/nickhardiman/ansible-collection-libvirt

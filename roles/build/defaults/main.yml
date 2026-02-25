@@ -1,5 +1,6 @@
 ---
+# defaults for role
 # definitions for libvirt network, VM and OS
-# are located under the include_role call for 
+# are located in a set_facts: task in kickstart/tasks/main.yml 
 # nickhardiman.libvirt.libvirt_machine_kickstart 
 # and in the defaults file of that role.
