@@ -1,4 +1,4 @@
-- name: Buid the gateway VM
+- name: Build the gateway VM
   hosts: hypervisor
   become: true
   gather_facts: false
