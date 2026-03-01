@@ -1,2 +1,5 @@
 ---
 # defaults for role
+# roles_add_domain: home
+# roles_add_hostname: gateway
+# roles_add_fqdn: "{{ roles_add_hostname }}.{{ roles_add_lab_domain }}"

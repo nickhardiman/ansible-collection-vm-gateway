@@ -1,25 +1,27 @@
 ---
-- name: "Add roles to {{ fqdn }}"
+- name: "Add roles to {{ build_fqdn }}"
   ansible.builtin.include_role:
     name: "{{ l_role }}"
   loop:
-    - nick.platform.managed_node
-#    - nick.platform.hosts_file
-    - nick.platform.register_rhsm
-    - nick.platform.latest_packages
-    - nick.platform.server_cert
-    - nick.platform.smtp_client
-    - nick.platform.squid_proxy
-    - nick.platform.dns_forwarder
-    - nick.platform.cockpit_server
-    - nick.platform.register_insights
+    - nickhardiman.platform.managed_node
+#    - nickhardiman.platform.hosts_file
+#    - nickhardiman.platform.register_rhsm
+    - nickhardiman.platform.register_rhc
+    # !!! add role to handle new RHEL10 bug https://access.redhat.com/solutions/7136991
+    - nickhardiman.platform.latest_packages
+    - nickhardiman.platform.server_cert
+    - nickhardiman.platform.smtp_client
+    - nickhardiman.platform.squid_proxy
+    - nickhardiman.platform.dns_forwarder
+    - nickhardiman.platform.cockpit_server
+    - nickhardiman.platform.register_insights
     # !!! add time_server?
     # https://hardiman.consulting/rhel/9/time/chrony.html
   loop_control:
     loop_var: l_role
 
-- name: "Configure HAproxy on {{ fqdn }}"
+- name: "Configure HAproxy on {{ build_fqdn }}"
   ansible.builtin.include_role:
-    name: nick.platform.haproxy
+    name: nickhardiman.platform.haproxy
   vars:
     haproxy_config_file_template: haproxy-sni-tcp-aap-refarch.cfg.j2

@@ -56,18 +56,18 @@
   when: not r_hosts_backup.stat.exists
 
 # add gateway address to hypervisor hosts file
-- name: "Update hypervisor /etc/hosts with gateway's public nic"
+- name: "Update /etc/hosts with gateway's public nic on {{ inventory_hostname }}"
   ansible.builtin.include_role:
-    name: nick.platform.hosts_record
+    name: nickhardiman.platform.hosts_record
   vars:
     h_ip_address: "{{ ipv4_for_nic0 }}"
-    h_fqdn: "{{ host + '.home' }}"
-    h_host: "{{ host }}"
+    h_fqdn: "{{ build_hostname + '.' + build_home_domain }}"
+    h_host: "{{ build_hostname + 'public' }}"
 
-- name: "Update hypervisor /etc/hosts with gateway's private nic"
+- name: "Update /etc/hosts with gateway's private nic on {{ inventory_hostname }}"
   ansible.builtin.include_role:
-    name: nick.platform.hosts_record
+    name: nickhardiman.platform.hosts_record
   vars:
-    h_ip_address: "{{ nics[1]['ip'] }}"
-    h_fqdn: "{{ fqdn }}"
-    h_host: "{{ host  + 'internal' }}"
+    h_ip_address: "{{ build_install_config['nics'][1]['ip'] }}"
+    h_fqdn: "{{ build_install_config['fqdn'] }}"
+    h_host: "{{ build_hostname  + 'lab' }}"

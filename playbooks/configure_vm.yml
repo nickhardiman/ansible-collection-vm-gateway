@@ -1,0 +1,6 @@
+- name: Build the gateway VM
+  hosts: gateway
+  become: true
+  gather_facts: false
+  roles:
+  - name: nickhardiman.vm_gateway.roles_add
