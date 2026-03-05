@@ -1,5 +1,6 @@
 ---
-- name: "Add roles to {{ build_fqdn }}"
+
+- name: "Add roles that don't need extra vars"
   ansible.builtin.include_role:
     name: "{{ l_role }}"
   loop:
@@ -9,7 +10,6 @@
     - nickhardiman.platform.register_rhc
     # !!! add role to handle new RHEL10 bug https://access.redhat.com/solutions/7136991
     - nickhardiman.platform.latest_packages
-    - nickhardiman.platform.server_cert
     - nickhardiman.platform.smtp_client
     - nickhardiman.platform.squid_proxy
     - nickhardiman.platform.dns_forwarder
@@ -19,6 +19,12 @@
     # https://hardiman.consulting/rhel/9/time/chrony.html
   loop_control:
     loop_var: l_role
+
+- name: "Add server certificate for {{ roles_add_fqdn }}"
+  ansible.builtin.include_role:
+    name: nickhardiman.platform.server_cert
+  vars:
+    server_cert_config: "{{ roles_add_server_cert_config }}"
 
 - name: "Configure HAproxy on {{ build_fqdn }}"
   ansible.builtin.include_role:
