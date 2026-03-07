@@ -27,11 +27,11 @@ build_lab_bridge_ip_cidr:    "{{ build_lab_net_prefix }}.1/24"
 build_lab_domain: silvan.uk
 
 # kickstart
-# playbook copies kvm-guest.ks to either a working directory or /var/tmp/
+# playbook copies kvm-guest.ks to either a working directory or {{ work_dir }}/
 build_kickstart_file_template: "gateway.ks.j2"
 # !!! fix work_dir first
-# build_kickstart_file_path: "{{ work_dir | default('/var/tmp') }}"
-build_kickstart_file_path:  /var/tmp
+build_kickstart_file_path: "{{ work_dir | default('{{ work_dir }}') }}"
+# build_kickstart_file_path:  {{ work_dir }}
 build_kickstart_file_name: "{{ build_fqdn }}.ks"
 
 # This is passed to the role

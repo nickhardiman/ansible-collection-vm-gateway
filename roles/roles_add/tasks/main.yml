@@ -26,7 +26,7 @@
   vars:
     server_cert_config: "{{ roles_add_server_cert_config }}"
 
-- name: "Configure HAproxy on {{ build_fqdn }}"
+- name: "Configure HAproxy on {{ roles_add_fqdn }}"
   ansible.builtin.include_role:
     name: nickhardiman.platform.haproxy
   vars:
