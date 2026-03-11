@@ -1,0 +1,31 @@
+
+- name: Backup already taken?
+  ansible.builtin.stat:
+    path: "/tmp/hosts"
+    get_checksum: false
+  register: r_hosts_backup
+
+- name: Backup /etc/hosts
+  ansible.builtin.copy:
+    src: /etc/hosts
+    dest: "/tmp/hosts"
+  when: not r_hosts_backup.stat.exists
+
+# add gateway address to managed node (hypervisor) hosts file
+- name: "Update /etc/hosts with gateway's public nic on {{ inventory_hostname }}"
+  ansible.builtin.include_role:
+    name: nickhardiman.platform.hosts_record
+  vars:
+    hosts_record_conf:
+      ip_address: "{{ ipv4_for_nic0 }}"
+      fqdn: "{{ build_hostname + '.' + build_home_domain }}"
+      host: "{{ build_hostname + 'public' }}"
+
+- name: "Update /etc/hosts with gateway's private nic on {{ inventory_hostname }}"
+  ansible.builtin.include_role:
+    name: nickhardiman.platform.hosts_record
+  vars:
+    hosts_record_conf:
+      ip_address: "{{ build_install_config['nics'][1]['ip'] }}"
+      fqdn: "{{ build_install_config['fqdn'] }}"
+      host: "{{ build_hostname  + 'private' }}"

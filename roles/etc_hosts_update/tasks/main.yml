@@ -20,67 +20,7 @@
 # !!! https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html-single/configuring_and_managing_linux_virtual_machines/index#enabling-qemu-guest-agent-on-linux-guests
 # 
 
-- name: Start detection of gateway address on the home network
-  ansible.builtin.debug:
-    msg: Gateways must be up for this to work.
-
-- name: Discover IP address assigned by DHCP on the home network
-  ansible.builtin.debug:
-    msg: "Scan {{ home_network }} and look for MAC address {{ public_mac_prefix }}:00:03"
-
-- name: "Use nmap to list IPv4 and MAC address. Use arp for a simpler list."
-  ansible.builtin.shell:
-    cmd: "nmap -sT {{ home_network }} -p 9090 >{{ work_dir }}/nmap.txt && arp -an >{{ work_dir }}/arp.txt"
-  register: r_scan
-  changed_when: false
-
-- name: "Look for gateway's MAC address in the arp list"
-  ansible.builtin.shell:
-    cmd: "grep {{ public_mac_prefix }}:00:03 {{ work_dir }}/arp.txt | awk '{print $2}' | sed 's/[()]//g'"
-  register: r_arp
-  changed_when: false
-
-# !!! check for zero-length ipv4_for_nic0
-
-- name: Record IP as gateway's host fact
-  ansible.builtin.set_fact:
-    ipv4_for_nic0: "{{ r_arp.stdout }}"
-
-- name: Display IP
-  ansible.builtin.debug:
-    var: ipv4_for_nic0
-
-- name: Backup already taken?
-  ansible.builtin.stat:
-    path: "{{ work_dir }}/hosts"
-    get_checksum: false
-  register: r_hosts_backup
-
-- name: Backup /etc/hosts
-  ansible.builtin.copy:
-    src: /etc/hosts
-    dest: "{{ work_dir }}/hosts"
-  when: not r_hosts_backup.stat.exists
-
-# add gateway address to hypervisor hosts file
-- name: "Update /etc/hosts with gateway's public nic on {{ inventory_hostname }}"
-  ansible.builtin.include_role:
-    name: nickhardiman.platform.hosts_record
-  vars:
-    hosts_record_conf:
-      ip_address: "{{ ipv4_for_nic0 }}"
-      fqdn: "{{ build_hostname + '.' + build_home_domain }}"
-      host: "{{ build_hostname + 'public' }}"
-
-- name: "Update /etc/hosts with gateway's private nic on {{ inventory_hostname }}"
-  ansible.builtin.include_role:
-    name: nickhardiman.platform.hosts_record
-  vars:
-    h_ip_address: "{{ build_install_config['nics'][1]['ip'] }}"
-    h_fqdn: "{{ build_install_config['fqdn'] }}"
-    h_host: "{{ build_hostname  + 'lab' }}"
-
-    hosts_record_conf:
-      ip_address: "{{ build_install_config['nics'][1]['ip'] }}"
-      fqdn: "{{ build_install_config['fqdn'] }}"
-      host: "{{ build_hostname  + 'private' }}"
+- name: Discover
+  ansible.builtin.include_tasks: nmap_scan.yml
+- name: Update
+  ansible.builtin.include_tasks: update_etc_hosts.yml

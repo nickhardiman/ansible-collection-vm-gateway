@@ -1,0 +1,40 @@
+
+- name: Start detection of gateway address on the home network
+  ansible.builtin.debug:
+    msg: Gateways must be up for this to work.
+
+- name: Install nmap
+  ansible.builtin.dnf:
+    name: nmap
+    state: present
+
+- name: Discover IP address assigned by DHCP on the home network
+  ansible.builtin.debug:
+    msg: "Scan {{ home_network }} and look for MAC address {{ public_mac_prefix }}:00:03"
+
+- name: "Use nmap to list IPv4 and MAC address. Use arp for a simpler list."
+  ansible.builtin.shell:
+    cmd: "nmap -sT {{ home_network }} -p 9090 >/tmp/nmap.txt && arp -an >/tmp/arp.txt"
+  register: r_scan
+  changed_when: false
+
+- name: "Look for gateway's MAC address in the arp list"
+  ansible.builtin.shell:
+    cmd: "grep {{ public_mac_prefix }}:00:03 /tmp/arp.txt | awk '{print $2}' | sed 's/[()]//g'"
+  register: r_arp
+  changed_when: false
+
+- name: Clean up
+  ansible.builtin.file:
+    name: /tmp/arp.txt
+    state: absent
+
+# !!! check for zero-length ipv4_for_nic0
+
+- name: Record IP as gateway's host fact
+  ansible.builtin.set_fact:
+    ipv4_for_nic0: "{{ r_arp.stdout }}"
+
+- name: Display IP
+  ansible.builtin.debug:
+    var: ipv4_for_nic0

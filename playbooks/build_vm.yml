@@ -1,8 +1,17 @@
-- name: Build the gateway VM
-  hosts: hypervisor
+# - name: Build the gateway VM
+#   hosts: hypervisor
+#   become: true
+#   gather_facts: false
+#   roles:
+#     - name: Kickstart the new VM and configure it
+#       role: nickhardiman.vm_gateway.build
+
+- name: Add hosts
+  hosts: localhost
   become: true
   gather_facts: false
+  connection: local
   roles:
     - name: Kickstart the new VM and configure it
-      role: nickhardiman.vm_gateway.build
+      role: nickhardiman.vm_gateway.etc_hosts_update
 
