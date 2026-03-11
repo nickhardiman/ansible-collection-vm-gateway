@@ -3,5 +3,5 @@
   become: true
   gather_facts: false
   roles:
-    - name: Kickstart the new VM and configure it
+    - name: Kickstart the new VM
       role: nickhardiman.vm_gateway.build

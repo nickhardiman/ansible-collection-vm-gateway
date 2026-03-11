@@ -1,5 +1,11 @@
 = Ansible Collection - nickhardiman.vm_gateway
 
+----
+ansible-playbook --vault-pass-file=~/my-vault-pass --extra-vars=@~/vault-credentials.yml nickhardiman.vm_gateway.build_vm.yml
+ansible-playbook --vault-pass-file=~/my-vault-pass --extra-vars=@~/vault-credentials.yml nickhardiman.vm_gateway.update_etc_hosts.yml
+ansible-playbook --vault-pass-file=~/my-vault-pass --extra-vars=@~/vault-credentials.yml nickhardiman.vm_gateway.configure_os.yml
+----
+
 Yet another refactor of my home lab automation
 
 == third attempt, RHEL lab 

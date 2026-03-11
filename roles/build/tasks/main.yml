@@ -19,6 +19,6 @@
     start_domain_name: "{{ build_fqdn }}"
     wait_for_ping: false
 
-- name: "Add public IP to /etc/hosts on {{ inventory_hostname }}"
-  ansible.builtin.include_role:
-    name: nickhardiman.vm_gateway.etc_hosts_update
+# - name: "Add public IP to /etc/hosts on {{ inventory_hostname }}"
+#   ansible.builtin.include_role:
+#     name: nickhardiman.vm_gateway.etc_hosts_update
