@@ -52,14 +52,14 @@
 
 - name: Backup already taken?
   ansible.builtin.stat:
-    path: {{ work_dir }}/hosts
+    path: "{{ work_dir }}/hosts"
     get_checksum: false
   register: r_hosts_backup
 
 - name: Backup /etc/hosts
   ansible.builtin.copy:
     src: /etc/hosts
-    dest: {{ work_dir }}/hosts
+    dest: "{{ work_dir }}/hosts"
   when: not r_hosts_backup.stat.exists
 
 # add gateway address to hypervisor hosts file
@@ -67,9 +67,10 @@
   ansible.builtin.include_role:
     name: nickhardiman.platform.hosts_record
   vars:
-    h_ip_address: "{{ ipv4_for_nic0 }}"
-    h_fqdn: "{{ build_hostname + '.' + build_home_domain }}"
-    h_host: "{{ build_hostname + 'public' }}"
+    hosts_record_conf:
+      ip_address: "{{ ipv4_for_nic0 }}"
+      fqdn: "{{ build_hostname + '.' + build_home_domain }}"
+      host: "{{ build_hostname + 'public' }}"
 
 - name: "Update /etc/hosts with gateway's private nic on {{ inventory_hostname }}"
   ansible.builtin.include_role:
@@ -78,3 +79,8 @@
     h_ip_address: "{{ build_install_config['nics'][1]['ip'] }}"
     h_fqdn: "{{ build_install_config['fqdn'] }}"
     h_host: "{{ build_hostname  + 'lab' }}"
+
+    hosts_record_conf:
+      ip_address: "{{ build_install_config['nics'][1]['ip'] }}"
+      fqdn: "{{ build_install_config['fqdn'] }}"
+      host: "{{ build_hostname  + 'private' }}"

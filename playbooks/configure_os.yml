@@ -3,4 +3,4 @@
   become: true
   gather_facts: false
   roles:
-  - name: nickhardiman.vm_gateway.roles_add
+  - name: nickhardiman.vm_gateway.configure_os
