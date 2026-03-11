@@ -1,0 +1,32 @@
+# host and lab network
+build_hostname: gateway
+build_home_domain: home
+build_lab_domain: silvan.uk
+build_fqdn: "{{ hostname }}.{{ lab_domain }}"
+
+# --------
+build_install_config:
+  fqdn: "{{ build_fqdn }}"
+  cpus: 2
+  ram: 4096                           # size in MiB (4G * 1024 = 4096M)
+  disk_size: 30                       # size in GiB
+  nics:
+    -
+      name: enp1s0
+      mac: "{{ public_mac_prefix }}:00:03"
+      net: "{{ public_libvirt_name }}"
+      # IP comes from the public network's DHCP service
+      # eg. 192.168.1.234
+    -
+      name: enp2s0
+      mac: "{{ lab_mac_prefix }}:00:03"
+      net: "{{ lab_libvirt_name }}"
+      # IP is static
+      ip: "{{ lab_net_prefix }}.3"
+  install_iso: /var/lib/libvirt/images/rhel-10.1-x86_64-dvd.iso
+  # Use this command to get the list of accepted OS variants.
+  #  virt-install --osinfo list
+  os_variant: rhel10.1
+  # kickstart_file_path: "{{ build_kickstart_file_path }}"
+  # kickstart_file_name: "{{ build_kickstart_file_name }}"
+# --------

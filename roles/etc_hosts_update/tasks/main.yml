@@ -15,12 +15,13 @@
 
 # !!! use a virsh command to extract IP: 
 #     virsh domifaddr --source agent gateway.silvan.uk | grep enp1s0 | awk '{print $4}'
-#     virsh qemu-agent-command gateway.silvan.uk '{"execute":"guest-network-get-interfaces"}' | jq .return[0]
+#     virsh qemu-agent-command gateway.silvan.uk '{"execute":"guest-network-get-interfaces"}' | jq .return[1]
 # !!! qemu-guest-agent is probably already running.
 # !!! https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html-single/configuring_and_managing_linux_virtual_machines/index#enabling-qemu-guest-agent-on-linux-guests
 # 
 
 - name: Discover
-  ansible.builtin.include_tasks: nmap_scan.yml
+  # ansible.builtin.include_tasks: nmap_scan.yml
+  ansible.builtin.include_tasks: domifaddr.yml
 - name: Update
   ansible.builtin.include_tasks: update_etc_hosts.yml

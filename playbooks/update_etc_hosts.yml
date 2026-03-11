@@ -3,5 +3,4 @@
   become: true
   gather_facts: false
   roles:
-    - name: Kickstart the new VM and configure it
-      role: nickhardiman.vm_gateway.build
+  - name: nickhardiman.vm_gateway.etc_hosts_update

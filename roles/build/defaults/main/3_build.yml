@@ -12,9 +12,7 @@ build_public_mac_prefix: "52:54:00:00"
 build_home_network: "192.168.1.0/24"
 build_home_domain: home
 
-# host and lab network
-build_hostname: gateway
-build_fqdn: "{{ build_hostname }}.{{ build_lab_domain }}"
+# lab network
 build_lab_net_short_name: lab
 build_lab_net_prefix: "192.168.134"
 build_lab_mac_prefix: "52:54:00:02"
@@ -25,6 +23,10 @@ build_lab_bridge_name:     "br{{ build_lab_net_short_name }}"
 build_lab_bridge_mac:        "{{ build_lab_mac_prefix }}:00:01"
 build_lab_bridge_ip_cidr:    "{{ build_lab_net_prefix }}.1/24"
 build_lab_domain: silvan.uk
+
+# host
+build_hostname: gateway
+build_fqdn: "{{ build_hostname }}.{{ build_lab_domain }}"
 
 # kickstart
 # playbook copies kvm-guest.ks to either a working directory or {{ work_dir }}/

@@ -1,0 +1,26 @@
+# !!! may make virtualbox unhappy
+
+- name: Start detection of gateway address on the home network
+  ansible.builtin.debug:
+    msg: Gateways must be up for this to work.
+
+# RPM libvirt-client provides virsh
+- name: "Use virsh to list IPv4 and MAC addresses"
+  ansible.builtin.shell:
+    cmd: "virsh domifaddr --source agent {{ build_fqdn }} | grep enp1s0 | awk '{print $4}' | cut -f1 -d'/'"
+  register: r_domifaddr
+  changed_when: false
+
+- name: TEST
+  ansible.builtin.debug:
+    var: r_domifaddr
+
+# !!! check for zero-length ipv4_for_nic0
+
+- name: Record IP as gateway's host fact
+  ansible.builtin.set_fact:
+    ipv4_for_nic0: "{{ r_domifaddr.stdout }}"
+
+- name: Display IP
+  ansible.builtin.debug:
+    var: ipv4_for_nic0

@@ -1,3 +1,4 @@
+# !!! may make virtualbox unhappy
 
 - name: Start detection of gateway address on the home network
   ansible.builtin.debug:
