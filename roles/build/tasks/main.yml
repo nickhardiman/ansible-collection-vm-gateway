@@ -1,4 +1,9 @@
 ---
+# The internal gateway interface can't be routed to.
+# We have to wait for the machine to boot up, 
+# but we can't wait for it to start responding to pings.
+# We can't ask libvirt because the VM is running even though the OS is not ready. 
+# Instead, wait 20 seconds for boot.
 
 - name: "Create kickstart config on {{ inventory_hostname }}"
   ansible.builtin.include_role:
@@ -18,6 +23,10 @@
   vars:
     start_domain_name: "{{ build_fqdn }}"
     wait_for_ping: false
+
+- name: Pause for 20 seconds to allow OS boot to start SSH service
+  ansible.builtin.pause:
+    seconds: 20
 
 # - name: "Add public IP to /etc/hosts on {{ inventory_hostname }}"
 #   ansible.builtin.include_role:

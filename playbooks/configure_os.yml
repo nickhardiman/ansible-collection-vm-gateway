@@ -1,4 +1,4 @@
-- name: Build the gateway VM
+- name: Assign many roles to this VM
   hosts: gateway
   become: true
   gather_facts: false
