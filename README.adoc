@@ -1,20 +1,32 @@
 = Ansible Collection - nickhardiman.vm_gateway
 
+
+== Use roles
+
+The example playbooks run these roles.
+
+* nickhardiman.vm_gateway.build
+* nickhardiman.vm_gateway.etc_hosts_update
+* nickhardiman.vm_gateway.configure_os
+
+== Use playbooks
+
 ----
 ansible-playbook --vault-pass-file=~/my-vault-pass --extra-vars=@~/vault-credentials.yml nickhardiman.vm_gateway.build_vm.yml
 ansible-playbook --vault-pass-file=~/my-vault-pass --extra-vars=@~/vault-credentials.yml nickhardiman.vm_gateway.update_etc_hosts.yml
 ansible-playbook --vault-pass-file=~/my-vault-pass --extra-vars=@~/vault-credentials.yml nickhardiman.vm_gateway.configure_os.yml
 ----
 
-Yet another refactor of my home lab automation
 
 == third attempt, RHEL lab 
 
 WIP
 
-network of virtual machines on one fresh RHEL 10 host.
+Build a network of virtual machines on one fresh RHEL 10 host.
 
-take the AAP2 work and break up into less choking chunks
+Yet another refactor of my home lab automation. 
+
+Take the AAP2 work (ansible-playbook-aap-lab) and break up into less chokingly massive chunks.
 
 * https://github.com/nickhardiman/script-rhel-setup
 * https://github.com/nickhardiman/ansible-playbook-rhel-lab
